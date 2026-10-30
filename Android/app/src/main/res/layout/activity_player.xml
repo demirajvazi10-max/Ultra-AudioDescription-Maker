@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+
+    <!-- the controls come first, so TalkBack reaches them before the web player -->
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:padding="12dp">
+            <TextView android:id="@+id/status" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:accessibilityLiveRegion="polite" android:textSize="16sp" android:paddingBottom="8dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <Button android:id="@+id/back" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                    android:text="@string/p_back" />
+                <Button android:id="@+id/playPause" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                    android:text="@string/p_play" />
+                <Button android:id="@+id/forward" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                    android:text="@string/p_forward" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <Button android:id="@+id/repeat" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                    android:text="@string/p_repeat" />
+                <Button android:id="@+id/toggle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                    android:text="@string/p_desc_off" />
+            </LinearLayout>
+            <Button android:id="@+id/position" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="@string/p_position" />
+            <Button android:id="@+id/write" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="@string/m_write" />
+            <!-- the description as text, for viewers who can see (the voice already says it) -->
+            <TextView android:id="@+id/caption" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:importantForAccessibility="no" android:textSize="18sp" android:textStyle="bold" android:paddingTop="8dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <WebView android:id="@+id/web" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+</LinearLayout>

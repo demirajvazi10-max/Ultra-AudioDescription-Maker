@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="16dp">
+        <TextView android:id="@+id/status" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:accessibilityLiveRegion="polite" android:textSize="16sp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:accessibilityHeading="true"
+            android:text="@string/s_sec_general" android:textSize="19sp" android:textStyle="bold" android:paddingTop="20dp" />
+        <TextView android:id="@+id/uiLangLabel" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:labelFor="@+id/uiLang" android:text="@string/s_ui" android:paddingTop="12dp" android:textSize="16sp" />
+        <Spinner android:id="@+id/uiLang" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" />
+        <TextView android:id="@+id/langLabel" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:labelFor="@+id/lang" android:text="@string/s_lang" android:paddingTop="12dp" android:textSize="16sp" />
+        <Spinner android:id="@+id/lang" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:accessibilityHeading="true"
+            android:text="@string/s_sec_voice" android:textSize="19sp" android:textStyle="bold" android:paddingTop="20dp" />
+        <TextView android:id="@+id/speakLabel" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:labelFor="@+id/speakWith" android:text="@string/s_speak" android:paddingTop="12dp" android:textSize="16sp" />
+        <Spinner android:id="@+id/speakWith" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" />
+        <TextView android:id="@+id/rateLabel" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:labelFor="@+id/rate" android:text="@string/s_rate" android:paddingTop="12dp" android:textSize="16sp" />
+        <Spinner android:id="@+id/rate" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" />
+        <Button android:id="@+id/test" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/s_test" />
+        <Button android:id="@+id/ttsSettings" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/s_tts_settings" />
+        <TextView android:id="@+id/duckLabel" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:labelFor="@+id/duck" android:text="@string/s_duck" android:paddingTop="12dp" android:textSize="16sp" />
+        <Spinner android:id="@+id/duck" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" />
+        <CheckBox android:id="@+id/extended" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="48dp" android:text="@string/s_extended" />
+        <TextView android:id="@+id/maxLabel" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:labelFor="@+id/maxSpeedUp" android:text="@string/s_maxup" android:paddingTop="12dp" android:textSize="16sp" />
+        <Spinner android:id="@+id/maxSpeedUp" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" />
+        <TextView android:id="@+id/densityLabel" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:labelFor="@+id/density" android:text="@string/s_density" android:paddingTop="12dp" android:textSize="16sp" />
+        <Spinner android:id="@+id/density" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:accessibilityHeading="true"
+            android:text="@string/s_sec_key" android:textSize="19sp" android:textStyle="bold" android:paddingTop="20dp" />
+        <TextView android:id="@+id/keyLabel" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:labelFor="@+id/key" android:text="@string/s_key" android:paddingTop="12dp" android:textSize="16sp" />
+        <EditText android:id="@+id/key" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="48dp" android:inputType="textPassword" android:importantForAutofill="no" />
+        <TextView android:id="@+id/keyState" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <Button android:id="@+id/keySave" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/s_key_save" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:accessibilityHeading="true"
+            android:text="@string/s_key_how" android:textStyle="bold" android:paddingTop="12dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/s_key_steps"
+            android:textIsSelectable="true" />
+        <Button android:id="@+id/keyLink" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/s_key_link" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/s_privacy"
+            android:paddingTop="16dp" />
+    </LinearLayout>
+</ScrollView>

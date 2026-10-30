@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Follows the phone's light / dark setting; Android's own high-contrast text works on top of it -->
+    <style name="Theme.UltraAD" parent="Theme.Material3.DayNight">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorSecondary">@color/accent</item>
+    </style>
+</resources>
