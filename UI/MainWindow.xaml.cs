@@ -168,7 +168,7 @@ namespace UltraAudioDescriptionMaker.UI
             return mi;
         }
 
-        private MenuItem Top(string key, params object[] children)
+        private new MenuItem Top(string key, params object[] children)
         {
             var mi = new MenuItem { Header = L(key) };
             foreach (var c in children) mi.Items.Add(c is string ? new Separator() : c);

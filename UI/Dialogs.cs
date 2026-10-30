@@ -26,7 +26,7 @@ namespace UltraAudioDescriptionMaker.UI
         private readonly PasswordBox _key;
         private readonly TextBlock _keyState;
 
-        public string Language => (string)Ui.Tag(_language);
+        public new string Language => (string)Ui.Tag(_language);
         public bool KeepExisting => _existing != null && (string)Ui.Tag(_existing) == "keep";
         public bool PrepareVoices => _prepare.IsChecked == true;
 

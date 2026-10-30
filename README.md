@@ -121,7 +121,7 @@ Open `UltraAudioDescriptionMaker.slnx` in Visual Studio 2022 or newer and build.
 
 ### Installer
 
-`Installer/UltraAudioDescriptionMaker.iss` is the Inno Setup script (Inno Setup 6.2 or newer):
+`Installer/UltraAudioDescriptionMaker.iss` is the Inno Setup script (Inno Setup 6.5 or newer). The Serbian translation of the installer, `Installer/SerbianLatin.isl`, is kept next to it, because Inno Setup does not ship it:
 
 1. Publish the program into the `publish` folder: in Visual Studio choose **Build → Publish** with the profile **Installer** (`Properties/PublishProfiles/Installer.pubxml`).
 2. Open the `.iss` file in Inno Setup and press **Compile** (`Ctrl+F9`). The setup file appears in `installer-output`.

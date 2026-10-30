@@ -48,7 +48,8 @@ CloseApplications=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
-Name: "serbian"; MessagesFile: "compiler:Languages\SerbianLatin.isl"
+; Serbian (Latin) is not shipped with Inno Setup, so its translation file is kept next to this script
+Name: "serbian"; MessagesFile: "SerbianLatin.isl"
 
 [CustomMessages]
 english.DesktopIcon=Create a desktop shortcut
