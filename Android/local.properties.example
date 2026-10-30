@@ -1,0 +1,2 @@
+# Copy this file to local.properties (it is not in git) if Gradle cannot find the Android SDK:
+sdk.dir=C\:\\Users\\Ajvazi\\AppData\\Local\\Android\\Sdk

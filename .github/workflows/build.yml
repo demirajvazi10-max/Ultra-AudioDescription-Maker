@@ -114,19 +114,19 @@ jobs:
         run: |
           if [ "${{ github.ref_type }}" = "tag" ]; then v="${GITHUB_REF_NAME#v}"; label="${GITHUB_REF_NAME}"; else v="0.0.${{ github.run_number }}"; label="build-${{ github.run_number }}"; fi
           echo "version=$v" >> "$GITHUB_OUTPUT"
-          echo "apk=UltraAudioDescription-android-$label.apk" >> "$GITHUB_OUTPUT"
+          echo "apk=UltraAudioDescriptionMaker-$label-android.apk" >> "$GITHUB_OUTPUT"
 
       - name: Build the app
         working-directory: Android
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon -PappVersion=${{ steps.ver.outputs.version }} -PappVersionCode=${{ github.run_number }}
-          cp app/build/outputs/apk/debug/app-debug.apk "../${{ steps.ver.outputs.apk }}"
+          cp app/build/outputs/apk/debug/UltraAudioDescriptionMaker-*.apk "../${{ steps.ver.outputs.apk }}"
 
       - name: Keep the APK with this run
         uses: actions/upload-artifact@v4
         with:
-          name: UltraAudioDescription-android
+          name: UltraAudioDescriptionMaker-android
           path: ${{ steps.ver.outputs.apk }}
 
       - name: Add the APK to the release
