@@ -4,7 +4,7 @@ Audio description on the phone: a voice tells what happens on screen, at the mom
 
 ## What it does
 
-- **Share from YouTube** — in the YouTube app choose *Share → Ultra Audio Description*. The link arrives in the app.
+- **Share from YouTube** — in the YouTube app choose *Share → Ultra Audio Description Maker*. The link arrives in the app.
 - **Write the descriptions with Gemini** — Gemini watches the video directly from its YouTube link and writes the whole synchronized script, with a map of where people speak. The answer streams in, so the progress is real; it is announced when it starts, at every quarter and at the end. You can leave the screen meanwhile.
 - **Watch here with descriptions** — YouTube's own embedded player inside the app. The app lowers the video under each description, speaks a long description a little faster, and pauses the video for a moment when a description needs more time (extended description).
 - **Watch in the YouTube app with descriptions** — the app follows the YouTube app's player (through Android's media sessions) and speaks each description at its moment; Android lowers YouTube while the voice speaks, and YouTube is paused for a moment when a description needs more time. The right script is found by the video's title. A notification has *Repeat* and *Stop*.
