@@ -181,7 +181,7 @@ Until the extension is in the stores:
 3. Choose **Load unpacked** and select the unpacked folder.
 4. Open the extension's menu (`Alt+Shift+A`) → **Options and keys**, and add a [Gemini key](#getting-the-keys).
 
-Privacy policy: [BrowserExtension/PRIVACY.md](BrowserExtension/PRIVACY.md). Store texts: [BrowserExtension/STORE_LISTING.md](BrowserExtension/STORE_LISTING.md).
+Privacy policy: [BrowserExtension/PRIVACY.md](BrowserExtension/PRIVACY.md). Store texts, the store logo and the Edge Add-ons publishing steps: [BrowserExtension/STORE_LISTING.md](BrowserExtension/STORE_LISTING.md).
 
 ---
 

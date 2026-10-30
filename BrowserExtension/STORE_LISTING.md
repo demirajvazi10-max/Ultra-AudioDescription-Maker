@@ -62,7 +62,31 @@ Adds audio description (spoken descriptions of what is on screen) to videos the 
 - Personally identifiable information, health, financial, authentication, personal communications, location, web history, user activity: no.
 
 ## Privacy policy URL
-Link to `BrowserExtension/PRIVACY.md` in the GitHub repository.
+https://github.com/demirajvazi10-max/Ultra-AudioDescription-Maker/blob/main/BrowserExtension/PRIVACY.md
+
+## Website and support
+- Website: https://github.com/demirajvazi10-max/Ultra-AudioDescription-Maker
+- Support: https://github.com/demirajvazi10-max/Ultra-AudioDescription-Maker/issues
+
+## Store logo
+[`store/logo-300.png`](store/logo-300.png) — 300×300, for the Edge Add-ons store listing.
+
+## Microsoft Edge Add-ons (Partner Center)
+1. Register as a developer at [Partner Center](https://partner.microsoft.com/dashboard/microsoftedge/overview) with a Microsoft account (free).
+2. **Create new extension** and upload `UltraAudioDescription-extension-<version>.zip` from the GitHub release.
+3. **Availability:** Public, all markets.
+4. **Properties:** category *Accessibility*; privacy policy, website and support URLs above; mature content: no.
+5. **Store listings:** English (and Serbian) — the short and detailed descriptions above, the store logo, and screenshots if available.
+6. **Search terms:** audio description; accessibility; blind; screen reader; YouTube; Gemini; descriptions
+7. **Notes for certification:**
+
+```
+The extension needs the user's own Google Gemini API key (free, from https://aistudio.google.com/app/apikey) to write descriptions; without a key it still loads WebVTT/SRT description scripts.
+How to test: open any YouTube video, press Alt+Shift+A (or click the toolbar icon), choose "Options and keys", paste a Gemini key and press "Test and save the key". Back on the video, open the menu again and choose "Write descriptions with Gemini (YouTube)"; they are spoken at their moments while the video plays.
+Nothing runs on a page until the user turns it on there (activeTab). No remote code; all code is in the package. Source code: https://github.com/demirajvazi10-max/Ultra-AudioDescription-Maker
+```
+
+8. **Publish.** Microsoft reviews it, usually within a few business days.
 
 ## Screenshots
 1280×800 or 640×400 PNG/JPEG, at least one: the menu (Alt+Shift+A) on a YouTube video; a description shown as text on the picture; the options page with the Gemini key steps.
