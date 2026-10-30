@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ultra Audio Description</title>
+  <link rel="stylesheet" href="ui.css">
+  <style> body { width: 360px; } </style>
+</head>
+<body>
+  <h1 id="title">Ultra Audio Description</h1>
+  <p id="status" class="status" role="status" aria-live="polite"></p>
+  <button id="toggle" disabled></button>
+  <button id="write" disabled></button>
+  <p id="writeNote" class="note"></p>
+  <button id="load" disabled></button>
+  <label class="check"><input type="checkbox" id="live" disabled> <span id="liveLabel"></span></label>
+  <button id="now" disabled></button>
+  <label class="check"><input type="checkbox" id="always" disabled> <span id="alwaysLabel"></span></label>
+  <button id="remove" disabled></button>
+  <p id="keys" class="note"></p>
+  <button id="options"></button>
+  <button id="sponsor"></button>
+  <script src="common.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

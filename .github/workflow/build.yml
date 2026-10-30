@@ -1,0 +1,137 @@
+# Builds the program on every push and pull request to main.
+# A tag that starts with "v" (for example v0.1.0, made in GitHub Desktop) also publishes a
+# GitHub release with an installer (Inno Setup), a ready-to-run zip, the browser extension zip for the stores,
+# and the Android app (APK). The zip is self-contained (no .NET install needed);
+# FFmpeg is not in it — the program downloads FFmpeg by itself on the first start.
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Install .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Work out the version
+        id: ver
+        shell: pwsh
+        run: |
+          if ("${{ github.ref_type }}" -eq "tag") {
+            $version = "${{ github.ref_name }}".TrimStart('v')
+            $label = "${{ github.ref_name }}"
+          } else {
+            $version = "0.0.${{ github.run_number }}"
+            $label = "build-${{ github.run_number }}"
+          }
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "zip=UltraAudioDescriptionMaker-$label-win-x64.zip" >> $env:GITHUB_OUTPUT
+
+      - name: Build
+        run: dotnet build UltraAudioDescriptionMaker.csproj -c Release -r win-x64 --self-contained true -p:Version=${{ steps.ver.outputs.version }}
+
+      - name: Publish
+        run: dotnet publish UltraAudioDescriptionMaker.csproj -c Release -r win-x64 --self-contained true -p:Version=${{ steps.ver.outputs.version }} -o publish
+
+      - name: Zip
+        shell: pwsh
+        run: |
+          Copy-Item README.md, LICENSE, THIRD-PARTY-NOTICES.md publish\ -Force
+          Compress-Archive -Path publish\* -DestinationPath "${{ steps.ver.outputs.zip }}"
+
+      - name: Pack the browser extension
+        shell: pwsh
+        run: |
+          $manifest = Get-Content BrowserExtension\manifest.json -Raw | ConvertFrom-Json
+          $manifest.version = "${{ steps.ver.outputs.version }}"
+          $manifest | ConvertTo-Json -Depth 10 | Set-Content BrowserExtension\manifest.json -Encoding utf8
+          New-Item -ItemType Directory -Force installer-output | Out-Null
+          Compress-Archive -Path BrowserExtension\* -DestinationPath "installer-output\UltraAudioDescription-extension-${{ steps.ver.outputs.version }}.zip"
+
+      - name: Build the installer (Inno Setup)
+        shell: pwsh
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) { choco install innosetup --no-progress -y; }
+          & $iscc Installer\UltraAudioDescriptionMaker.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Keep the zip and the installer with this run
+        uses: actions/upload-artifact@v4
+        with:
+          name: UltraAudioDescriptionMaker-win-x64
+          path: |
+            ${{ steps.ver.outputs.zip }}
+            installer-output/*.exe
+            installer-output/*.zip
+
+      - name: Publish the release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ steps.ver.outputs.zip }}
+            installer-output/*.exe
+            installer-output/*.zip
+          generate_release_notes: true
+
+  # the Android app: an installable APK (signed with the debug key, for testing and sideloading)
+  android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Install Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install the Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Work out the version
+        id: ver
+        shell: bash
+        run: |
+          if [ "${{ github.ref_type }}" = "tag" ]; then v="${GITHUB_REF_NAME#v}"; label="${GITHUB_REF_NAME}"; else v="0.0.${{ github.run_number }}"; label="build-${{ github.run_number }}"; fi
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "apk=UltraAudioDescription-android-$label.apk" >> "$GITHUB_OUTPUT"
+
+      - name: Build the app
+        working-directory: Android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon -PappVersion=${{ steps.ver.outputs.version }} -PappVersionCode=${{ github.run_number }}
+          cp app/build/outputs/apk/debug/app-debug.apk "../${{ steps.ver.outputs.apk }}"
+
+      - name: Keep the APK with this run
+        uses: actions/upload-artifact@v4
+        with:
+          name: UltraAudioDescription-android
+          path: ${{ steps.ver.outputs.apk }}
+
+      - name: Add the APK to the release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.ver.outputs.apk }}
+

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ultra Audio Description</title>
+  <link rel="stylesheet" href="ui.css">
+  <style> body { max-width: 720px; margin: 0 auto; padding-top: 20px; } </style>
+</head>
+<body>
+  <h1 id="title"></h1>
+  <p id="status" class="status" role="status" aria-live="polite"></p>
+
+  <h2 id="secGeneral"></h2>
+  <label for="uiLang" id="uiLangLabel"></label>
+  <select id="uiLang"><option value="en">English</option><option value="sr">Srpski</option></select>
+  <label for="lang" id="langLabel"></label>
+  <select id="lang"></select>
+
+  <h2 id="secVoice"></h2>
+  <label for="speakWith" id="speakWithLabel"></label>
+  <select id="speakWith"><option value="voice"></option><option value="reader"></option></select>
+  <label for="voiceName" id="voiceLabel"></label>
+  <select id="voiceName"></select>
+  <button id="test"></button>
+  <label for="rate" id="rateLabel"></label>
+  <select id="rate"></select>
+  <label for="duck" id="duckLabel"></label>
+  <select id="duck"></select>
+  <label class="check"><input type="checkbox" id="extended"> <span id="extendedLabel"></span></label>
+  <label for="maxSpeedUp" id="maxLabel"></label>
+  <select id="maxSpeedUp"></select>
+  <label class="check"><input type="checkbox" id="showText"> <span id="showTextLabel"></span></label>
+  <label for="density" id="densityLabel"></label>
+  <select id="density"><option value="Essential"></option><option value="Normal"></option><option value="Detailed"></option></select>
+
+  <h2 id="secLive"></h2>
+  <label class="check"><input type="checkbox" id="liveWhenNoScript"> <span id="liveAutoLabel"></span></label>
+  <label class="check"><input type="checkbox" id="livePause"> <span id="livePauseLabel"></span></label>
+  <label for="liveSensitivity" id="sensLabel"></label>
+  <select id="liveSensitivity"><option value="28"></option><option value="18"></option><option value="10"></option></select>
+
+  <h2 id="secAi"></h2>
+  <label for="ai" id="aiLabel"></label>
+  <select id="ai"><option value="gemini"></option><option value="ollama"></option></select>
+  <div id="ollamaBox">
+    <label for="ollamaModel" id="ollamaModelLabel"></label>
+    <input type="text" id="ollamaModel" autocomplete="off">
+    <button id="ollamaAllow"></button>
+  </div>
+  <div id="geminiBox">
+    <label for="key" id="keyLabel"></label>
+    <input type="password" id="key" autocomplete="off">
+    <p id="keyState" class="note"></p>
+    <button id="keySave"></button>
+    <label for="keySteps" id="keyHowLabel"></label>
+    <textarea id="keySteps" rows="9" readonly></textarea>
+    <button id="keyLink"></button>
+  </div>
+
+  <p id="privacy" class="note"></p>
+  <p id="about" class="note"></p>
+  <button id="sponsor"></button>
+  <script src="common.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Ultra Audio Description",
+  "short_name": "Ultra AD",
+  "version": "0.1.0",
+  "description": "Audio description for web videos: a voice tells what happens on screen, at the moment it happens. YouTube, and any site that allows it.",
+  "author": "Demir Ajvazi",
+  "homepage_url": "https://github.com/demirajvazi10-max",
+  "minimum_chrome_version": "116",
+  "icons": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "action": {
+    "default_title": "Ultra Audio Description (Alt+Shift+A)",
+    "default_popup": "popup.html",
+    "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png" }
+  },
+  "background": { "service_worker": "background.js" },
+  "options_page": "options.html",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["https://generativelanguage.googleapis.com/*"],
+  "optional_host_permissions": ["https://*/*", "http://*/*", "http://localhost:11434/*", "http://127.0.0.1:11434/*"],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": { "default": "Alt+Shift+A" },
+      "description": "Open the Ultra Audio Description menu"
+    },
+    "toggle-descriptions": {
+      "suggested_key": { "default": "Alt+Shift+D" },
+      "description": "Turn audio description on or off on this page"
+    },
+    "describe-now": {
+      "suggested_key": { "default": "Alt+Shift+S" },
+      "description": "Describe the picture now"
+    },
+    "repeat-last": {
+      "suggested_key": { "default": "Alt+Shift+R" },
+      "description": "Repeat the last description, or say the status"
+    }
+  }
+}

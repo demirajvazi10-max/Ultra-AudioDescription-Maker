@@ -1,0 +1,20 @@
+/* Shared look of the popup, the options and the load page: follows the system's light/dark choice and Windows high contrast */
+:root { color-scheme: light dark; --bg: #ffffff; --fg: #111111; --muted: #444444; --accent: #006b2e; --border: #8a8a8a; --panel: #f3f3f3; }
+@media (prefers-color-scheme: dark) { :root { --bg: #1e1e1e; --fg: #ffffff; --muted: #bbbbbb; --accent: #00e676; --border: #666666; --panel: #2a2a2a; } }
+body { background: var(--bg); color: var(--fg); font: 15px/1.45 system-ui, "Segoe UI", sans-serif; margin: 0; padding: 14px 16px; }
+h1 { font-size: 18px; margin: 0 0 10px; }
+h2 { font-size: 16px; margin: 18px 0 6px; }
+p, .note { margin: 6px 0; }
+.note { color: var(--muted); font-size: 13px; }
+button, select, input[type=text], input[type=password], input[type=file] { font: inherit; color: var(--fg); background: var(--panel); border: 1px solid var(--border); border-radius: 4px; padding: 6px 10px; }
+button { display: block; width: 100%; text-align: left; margin: 6px 0; cursor: pointer; }
+button:disabled { opacity: .55; cursor: default; }
+button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+a { color: var(--accent); }
+label { display: block; margin: 10px 0 3px; font-weight: 600; }
+label.check { font-weight: 400; display: flex; gap: 8px; align-items: flex-start; }
+select, input[type=text], input[type=password] { width: 100%; box-sizing: border-box; }
+textarea { width: 100%; box-sizing: border-box; font: inherit; color: var(--fg); background: var(--panel); border: 1px solid var(--border); border-radius: 4px; padding: 6px; }
+.status { background: var(--panel); border-left: 4px solid var(--accent); padding: 8px 10px; margin: 0 0 10px; }
+.row { display: flex; gap: 8px; } .row > * { flex: 1; }
+@media (forced-colors: active) { button, select, input { border: 1px solid ButtonText; } .status { border-left-color: Highlight; } }

@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<AssemblyName>UltraAudioDescriptionMaker</AssemblyName>
+		<RootNamespace>UltraAudioDescriptionMaker</RootNamespace>
+		<!-- The only place to change before a GitHub release; the About box reads it. -->
+		<Version>0.1.0</Version>
+		<Product>Ultra Audio Description Maker</Product>
+		<Company>Demir Ajvazi</Company>
+		<Authors>Demir Ajvazi</Authors>
+		<Copyright>Copyright © 2026 Demir Ajvazi</Copyright>
+		<Description>Accessible audio description maker for videos, part of the Ultra suite.</Description>
+		<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+		<!-- the warnings for unused fields in code-built windows are not useful here -->
+		<NoWarn>$(NoWarn);CS0169;CS0414</NoWarn>
+		<!-- Visual Studio always asks MSBuild whether to build before F5: files changed outside Visual Studio
+		     (for example by a tool or another editor) are never missed, so F5 never starts an old build -->
+		<DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+		<!-- the publish output and the setup file are not part of the project -->
+		<DefaultItemExcludes>$(DefaultItemExcludes);publish\**;installer-output\**;BrowserExtension\**;Android\**</DefaultItemExcludes>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="LibVLCSharp" Version="3.9.6" />
+		<PackageReference Include="LibVLCSharp.WPF" Version="3.9.6" />
+		<PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.23" />
+		<PackageReference Include="NAudio" Version="2.3.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+		<PackageReference Include="System.Speech" Version="8.0.0" />
+	</ItemGroup>
+
+	<!-- FFmpeg: put ffmpeg.exe and ffprobe.exe in a folder named Ffmpeg next to this file and they ship with the build -->
+	<ItemGroup>
+		<None Include="Ffmpeg\*.exe" CopyToOutputDirectory="PreserveNewest" Condition="Exists('Ffmpeg')" />
+		<None Update="LICENSE" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="THIRD-PARTY-NOTICES.md" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
+</Project>
