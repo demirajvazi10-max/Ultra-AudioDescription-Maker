@@ -484,7 +484,13 @@ namespace UltraAudioDescriptionMaker.UI
             if (key.Length == 0) { Say(L("key_empty")); _gemKey.Focus(); return; }
             Say(L("key_testing"));
             string problem = await GeminiClient.TestKeyAsync(key, CancellationToken.None);
-            if (problem != null) { Ui.Sound(false); Say(LF("key_bad", problem)); _gemKey.Focus(); return; }
+            if (problem != null)
+            {
+                Ui.Sound(false);
+                string msg = LF("key_bad", problem);
+                if (key.StartsWith("AIza", StringComparison.Ordinal)) msg += " " + L("key_old");   // Google is retiring the old key type
+                Say(msg); _gemKey.Focus(); return;
+            }
             KeyStore.Save(GeminiClient.KeyName, key);
             GeminiClient.Reset();
             _gemKey.Clear();

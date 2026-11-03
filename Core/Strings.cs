@@ -379,6 +379,7 @@ namespace UltraAudioDescriptionMaker.Core
             ["key_empty"] = ("Paste the key first.", "Prvo nalepi ključ."),
             ["key_testing"] = ("Testing the key…", "Proveravam ključ…"),
             ["key_bad"] = ("The key does not work: {0}", "Ključ ne radi: {0}"),
+            ["key_old"] = ("This looks like an older key (it starts with AIza). Google is switching those off: create a new key in Google AI Studio, it will start with AQ.", "Ovo izgleda kao stariji ključ (počinje sa AIza). Google ih gasi: napravi novi ključ u Google AI Studiju, počinjaće sa AQ."),
             ["set_sec_tools"] = ("Tools", "Alati"),
             ["set_lbl_ffmpeg"] = ("_FFmpeg folder", "_FFmpeg folder"),
             ["set_help_ffmpeg"] = ("Leave empty to find FFmpeg automatically (next to the program, in PATH, or in Ultra Video Editor).", "Ostavi prazno da se FFmpeg pronađe sam (pored programa, u PATH-u ili u Ultra Video Editoru)."),
@@ -404,13 +405,13 @@ namespace UltraAudioDescriptionMaker.Core
                 "1. Press the button below, \"Open Google AI Studio\". The page aistudio.google.com/app/apikey opens in your browser.\n" +
                 "2. Sign in with your Google account (the same as for Gmail or YouTube).\n" +
                 "3. Press \"Create API key\". If Google asks for a project, choose the one it offers, or create a new one.\n" +
-                "4. Copy the key (a long line of letters and numbers that starts with AIza).\n" +
+                "4. Copy the key (a long line of letters and numbers; new keys start with AQ.). Older keys that start with AIza are being switched off by Google, so if yours stops working, create a new one the same way.\n" +
                 "5. Come back here, paste it into the Gemini key field above, and press \"Test and save the key\".\n" +
                 "The Gemini Flash models have a free tier, and no payment card is needed. Keep the key to yourself, like a password.",
                 "1. Pritisni dugme ispod, \"Otvori Google AI Studio\". U pregledaču se otvara stranica aistudio.google.com/app/apikey.\n" +
                 "2. Prijavi se svojim Google nalogom (istim kao za Gmail ili YouTube).\n" +
                 "3. Pritisni \"Create API key\". Ako Google traži projekat, izaberi onaj koji ponudi ili napravi novi.\n" +
-                "4. Kopiraj ključ (dugačak red slova i brojeva koji počinje sa AIza).\n" +
+                "4. Kopiraj ključ (dugačak red slova i brojeva; novi ključevi počinju sa AQ.). Google gasi starije ključeve koji počinju sa AIza, pa ako tvoj prestane da radi, napravi novi na isti način.\n" +
                 "5. Vrati se ovde, nalepi ga u polje za Gemini ključ iznad i pritisni \"Proveri i sačuvaj ključ\".\n" +
                 "Gemini Flash modeli imaju besplatan nivo i ne treba platna kartica. Čuvaj ključ za sebe, kao lozinku."),
             ["set_link_gemini"] = ("Open Google AI Studio (Gemini key)", "Otvori Google AI Studio (Gemini ključ)"),

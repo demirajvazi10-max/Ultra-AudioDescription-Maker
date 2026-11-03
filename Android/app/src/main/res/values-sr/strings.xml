@@ -95,8 +95,9 @@
     <string name="s_key_testing">Proveravam ključ…</string>
     <string name="s_key_ok">Ključ radi i sačuvan je.</string>
     <string name="s_key_bad">Ključ ne radi: %1$s</string>
+    <string name="s_key_old">Ovo izgleda kao stariji ključ (počinje sa AIza). Google ih gasi: napravi novi ključ u Google AI Studiju, počinjaće sa AQ.</string>
     <string name="s_key_how">Kako dobiti Gemini ključ</string>
-    <string name="s_key_steps">1. Pritisni „Otvori Google AI Studio” ispod. Otvara se stranica aistudio.google.com/app/apikey.\n2. Prijavi se svojim Google nalogom (istim kao za Gmail ili YouTube).\n3. Pritisni „Create API key”. Ako Google traži projekat, izaberi onaj koji ponudi ili napravi novi.\n4. Kopiraj ključ (dugačak red koji počinje sa AIza).\n5. Vrati se ovde, nalepi ga u polje za Gemini ključ i pritisni „Proveri i sačuvaj ključ”.\nGemini Flash modeli imaju besplatan nivo i ne treba platna kartica. Čuvaj ključ za sebe, kao lozinku.</string>
+    <string name="s_key_steps">1. Pritisni „Otvori Google AI Studio” ispod. Otvara se stranica aistudio.google.com/app/apikey.\n2. Prijavi se svojim Google nalogom (istim kao za Gmail ili YouTube).\n3. Pritisni „Create API key”. Ako Google traži projekat, izaberi onaj koji ponudi ili napravi novi.\n4. Kopiraj ključ (dugačak red; novi ključevi počinju sa AQ.). Google gasi starije ključeve koji počinju sa AIza, pa ako tvoj prestane da radi, napravi novi na isti način.\n5. Vrati se ovde, nalepi ga u polje za Gemini ključ i pritisni „Proveri i sačuvaj ključ”.\nGemini Flash modeli imaju besplatan nivo i ne treba platna kartica. Čuvaj ključ za sebe, kao lozinku.</string>
     <string name="s_key_link">Otvori Google AI Studio (Gemini ključ)</string>
     <string name="s_privacy">Privatnost: YouTube adresa videa ide Google-ovom Geminiju, sa tvojim ključem, samo kada tražiš opise. Ključ i opisi ostaju na ovom telefonu. Aplikacija ništa ne prikuplja.</string>
 </resources>

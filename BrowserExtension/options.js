@@ -109,7 +109,11 @@
     if (!key) { $('key').focus(); return; }
     say(U.t('o_key_testing'));
     const r = await chrome.runtime.sendMessage({ type: 'testKey', key });
-    if (r && r.problem) { say(U.t('o_key_bad', r.problem)); $('key').focus(); return; }
+    if (r && r.problem) {
+      // Google is retiring the old key type (AIza); new keys start with AQ.
+      say(U.t('o_key_bad', r.problem) + (key.startsWith('AIza') ? ' ' + U.t('o_key_old') : ''));
+      $('key').focus(); return;
+    }
     await chrome.storage.local.set({ geminiKey: key });
     $('key').value = '';
     await keyState();

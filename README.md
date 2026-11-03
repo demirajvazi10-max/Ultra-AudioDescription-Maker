@@ -210,7 +210,7 @@ Android 8.0 or newer is needed.
 
 The Windows program's Settings (`Ctrl+Shift+P`), the extension's options and the Android app's settings all explain step by step how to get each key, with buttons that open the right pages directly.
 
-- **Gemini** (needed for AI descriptions) — [Google AI Studio → API keys](https://aistudio.google.com/app/apikey): sign in with a Google account, press *Create API key*, copy the key, paste it into the settings and test it. The Flash models have a free tier; no payment card is needed.
+- **Gemini** (needed for AI descriptions) — [Google AI Studio → API keys](https://aistudio.google.com/app/apikey): sign in with a Google account, press *Create API key*, copy the key, paste it into the settings and test it. The Flash models have a free tier; no payment card is needed. New keys start with `AQ.` — since May 2026 Google AI Studio makes only this kind. Older keys that start with `AIza` are being switched off by Google; if yours stops working, create a new one the same way. All three parts send the key in the `x-goog-api-key` header, so both kinds work for as long as Google accepts them.
 - **Google Cloud** (optional, only for the HD voices in the Windows program) — [create a project](https://console.cloud.google.com/projectcreate), [turn on the Text-to-Speech API](https://console.cloud.google.com/apis/library/texttospeech.googleapis.com), then [create an API key](https://console.cloud.google.com/apis/credentials) (best restricted to the Cloud Text-to-Speech API). Google Cloud asks for a billing account even for its free monthly amount.
 
 ## Privacy

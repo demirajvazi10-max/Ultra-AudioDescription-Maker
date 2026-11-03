@@ -66,7 +66,12 @@ class SettingsActivity : AppCompatActivity() {
             say(getString(R.string.s_key_testing))
             lifecycleScope.launch {
                 val problem = Gemini.testKey(key)
-                if (problem != null) { say(getString(R.string.s_key_bad, problem)); return@launch }
+                if (problem != null) {
+                    // Google is retiring the old key type (AIza); new keys start with AQ.
+                    val old = if (key.startsWith("AIza")) " " + getString(R.string.s_key_old) else ""
+                    say(getString(R.string.s_key_bad, problem) + old)
+                    return@launch
+                }
                 prefs.geminiKey = key
                 keyBox.setText("")
                 keyState.setText(R.string.s_key_saved)

@@ -96,8 +96,9 @@
     <string name="s_key_testing">Testing the key…</string>
     <string name="s_key_ok">The key works and is saved.</string>
     <string name="s_key_bad">The key does not work: %1$s</string>
+    <string name="s_key_old">This looks like an older key (it starts with AIza). Google is switching those off: create a new key in Google AI Studio, it will start with AQ.</string>
     <string name="s_key_how">How to get a Gemini key</string>
-    <string name="s_key_steps">1. Press “Open Google AI Studio” below. The page aistudio.google.com/app/apikey opens.\n2. Sign in with your Google account (the same as for Gmail or YouTube).\n3. Press “Create API key”. If Google asks for a project, choose the one it offers, or create a new one.\n4. Copy the key (a long line that starts with AIza).\n5. Come back here, paste it into the Gemini key field, and press “Test and save the key”.\nThe Gemini Flash models have a free tier, and no payment card is needed. Keep the key to yourself, like a password.</string>
+    <string name="s_key_steps">1. Press “Open Google AI Studio” below. The page aistudio.google.com/app/apikey opens.\n2. Sign in with your Google account (the same as for Gmail or YouTube).\n3. Press “Create API key”. If Google asks for a project, choose the one it offers, or create a new one.\n4. Copy the key (a long line; new keys start with AQ.). Older keys that start with AIza are being switched off by Google, so if yours stops working, create a new one the same way.\n5. Come back here, paste it into the Gemini key field, and press “Test and save the key”.\nThe Gemini Flash models have a free tier, and no payment card is needed. Keep the key to yourself, like a password.</string>
     <string name="s_key_link">Open Google AI Studio (Gemini key)</string>
     <string name="s_privacy">Privacy: the YouTube address of a video goes to Google’s Gemini, with your own key, only when you ask for descriptions. The key and the descriptions stay on this phone. The app collects nothing.</string>
 </resources>
