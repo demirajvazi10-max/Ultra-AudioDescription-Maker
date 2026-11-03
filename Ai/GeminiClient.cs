@@ -24,13 +24,15 @@ namespace UltraAudioDescriptionMaker.Ai
         public const string KeyName = "gemini";
         public static string Key => KeyStore.Load(KeyName);
         /// <summary>Forget the chosen model (after the key changed).</summary>
-        public static void Reset() { _model = null; _modelForKey = null; }
+        public static void Reset() { _model = null; _modelForKey = null; _alternatives = new List<string>(); }
         public static bool HasKey => !string.IsNullOrEmpty(Key);
 
         private const string Base = "https://generativelanguage.googleapis.com/v1beta/";
         private static readonly HttpClient _http = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };
         private static string _model;
         private static string _modelForKey;
+        /// <summary>The other Flash models this key can use, newest first: used when the chosen one is overloaded.</summary>
+        private static List<string> _alternatives = new List<string>();
 
         public static string LanguageName(string lang) => Languages.PromptName(lang);
 
@@ -54,6 +56,7 @@ namespace UltraAudioDescriptionMaker.Ai
                         .Select(n => (Name: n, Version: ParseVersion(Regex.Match(n, @"gemini-([\d.]+)-").Groups[1].Value)))
                         .OrderByDescending(x => x.Version).ToList();
                     if (flash.Count > 0) chosen = flash[0].Name;
+                    _alternatives = flash.Skip(1).Select(x => x.Name).ToList();
                 }
             }
             catch (OperationCanceledException) when (ct.IsCancellationRequested) { throw; }
@@ -61,6 +64,20 @@ namespace UltraAudioDescriptionMaker.Ai
             _modelForKey = key;
             AppLog.Info($"Gemini model: {chosen}");
             return _model = chosen;
+        }
+
+        /// <summary>
+        /// Errors that mean "Google is busy right now", not "the request is wrong": too many requests (429),
+        /// the model is overloaded ("high demand", 503) or a passing server error (500, 502, 504).
+        /// </summary>
+        private static bool IsBusy(int status) => status == 429 || status == 500 || status == 502 || status == 503 || status == 504;
+
+        /// <summary>Another Flash model to try when <paramref name="current"/> stays overloaded (null when there is none left).</summary>
+        private static string OtherModel(string current, ISet<string> tried)
+        {
+            foreach (var m in _alternatives.Append("gemini-flash-latest"))
+                if (m != current && !tried.Contains(m)) return m;
+            return null;
         }
 
         private static Version ParseVersion(string v)
@@ -86,6 +103,8 @@ namespace UltraAudioDescriptionMaker.Ai
             var body = new { contents = new[] { new { parts } }, generationConfig };
             string json = JsonConvert.SerializeObject(body);
 
+            var tried = new HashSet<string> { model };
+            int busyHere = 0;
             for (int attempt = 0; ; attempt++)
             {
                 using var req = new HttpRequestMessage(HttpMethod.Post, $"{Base}models/{model}:generateContent")
@@ -95,10 +114,18 @@ namespace UltraAudioDescriptionMaker.Ai
                 req.Headers.Add("x-goog-api-key", key);
                 using var resp = await http.SendAsync(req, ct);
                 string text = await resp.Content.ReadAsStringAsync(ct);
-                if ((int)resp.StatusCode == 429 && attempt < 3)
+                if (IsBusy((int)resp.StatusCode) && attempt < 7)
                 {
-                    // the free tier allows a limited number of requests a minute: wait and try again
-                    await Task.Delay(TimeSpan.FromSeconds(15 * (attempt + 1)), ct);
+                    // Google is busy: wait and try again; when this model stays overloaded, try another Flash model
+                    busyHere++;
+                    string other = busyHere >= 2 ? OtherModel(model, tried) : null;
+                    if (other != null)
+                    {
+                        AppLog.Warn($"Gemini {model} is busy ({(int)resp.StatusCode}); trying {other}.");
+                        model = other; tried.Add(other); busyHere = 0;
+                        continue;
+                    }
+                    await Task.Delay(TimeSpan.FromSeconds(Math.Min(60, 15 * busyHere)), ct);
                     continue;
                 }
                 if ((int)resp.StatusCode == 404 && attempt == 0 && model != "gemini-flash-latest")
@@ -268,7 +295,30 @@ namespace UltraAudioDescriptionMaker.Ai
             bool limitThinking = true;
             string json = JsonConvert.SerializeObject(new { contents = new[] { new { parts } }, generationConfig = VideoConfig(model, lowResolution, limitThinking) });
 
-            int quietRetries = 0;
+            int quietRetries = 0, busyHere = 0;
+            var tried = new HashSet<string> { model };
+
+            // Google is busy: wait and say so; when the model stays overloaded, switch to another Flash model.
+            // Returns false when nothing is left to try.
+            async Task<bool> WaitOrSwitch()
+            {
+                busyHere++;
+                string other = busyHere >= 2 ? OtherModel(model, tried) : null;
+                if (other != null)
+                {
+                    AppLog.Info($"Gemini: trying {other} instead of {model}.");
+                    onState?.Invoke("model|" + other);
+                    model = other; tried.Add(other); busyHere = 0; limitThinking = true;
+                    json = JsonConvert.SerializeObject(new { contents = new[] { new { parts } }, generationConfig = VideoConfig(model, lowResolution, true) });
+                    return true;
+                }
+                if (busyHere > 4) return false;
+                int wait = Math.Min(60, 15 * busyHere);
+                onState?.Invoke("busy|" + wait);
+                await Task.Delay(TimeSpan.FromSeconds(wait), ct);
+                return true;
+            }
+
             for (int attempt = 0; ; attempt++)
             {
                 using var watchdog = CancellationTokenSource.CreateLinkedTokenSource(ct);
@@ -281,12 +331,10 @@ namespace UltraAudioDescriptionMaker.Ai
                     };
                     req.Headers.Add("x-goog-api-key", key);
                     using var resp = await _longHttp.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, watchdog.Token);
-                    if ((int)resp.StatusCode == 429 && attempt < 4)
+                    if (IsBusy((int)resp.StatusCode) && attempt < 8)
                     {
-                        int wait = 15 * (attempt + 1);
-                        onState?.Invoke("busy|" + wait);
-                        await Task.Delay(TimeSpan.FromSeconds(wait), ct);
-                        continue;
+                        AppLog.Warn($"Gemini {model} is busy ({(int)resp.StatusCode}).");
+                        if (await WaitOrSwitch()) continue;
                     }
                     if ((int)resp.StatusCode == 404 && attempt == 0 && model != "gemini-flash-latest")
                     {
@@ -320,7 +368,13 @@ namespace UltraAudioDescriptionMaker.Ai
                         if (!line.StartsWith("data:")) continue;
                         JObject chunk;
                         try { chunk = JObject.Parse(line.Substring(5).Trim()); } catch { continue; }
-                        if (chunk["error"] != null) throw new InvalidOperationException("Gemini: " + chunk["error"]?["message"]);
+                        if (chunk["error"] != null)
+                        {
+                            // "high demand" can also arrive inside the stream; before any text, it is retried like the rest
+                            int code = chunk["error"]?["code"]?.Value<int?>() ?? 0;
+                            if (text.Length == 0 && IsBusy(code) && attempt < 8) throw new BusyException();
+                            throw new InvalidOperationException("Gemini: " + chunk["error"]?["message"]);
+                        }
                         var pieces = chunk["candidates"]?[0]?["content"]?["parts"] as JArray;
                         if (pieces == null) continue;
                         bool grew = false;
@@ -334,6 +388,11 @@ namespace UltraAudioDescriptionMaker.Ai
                     }
                     return text.ToString().Trim();
                 }
+                catch (BusyException)
+                {
+                    AppLog.Warn($"Gemini {model} became busy before it wrote anything.");
+                    if (!await WaitOrSwitch()) throw new InvalidOperationException("Gemini: the model is overloaded; please try again in a few minutes.");
+                }
                 catch (OperationCanceledException) when (!ct.IsCancellationRequested && quietRetries < 1)
                 {
                     // 5 minutes without a single byte: the connection is stuck, ask once more
@@ -343,6 +402,9 @@ namespace UltraAudioDescriptionMaker.Ai
                 }
             }
         }
+
+        /// <summary>Google became busy inside a streamed answer, before any text arrived.</summary>
+        private sealed class BusyException : Exception { }
 
         /// <summary>A public YouTube video that Gemini can watch directly from its link.</summary>
         public static bool IsYouTube(string url) =>

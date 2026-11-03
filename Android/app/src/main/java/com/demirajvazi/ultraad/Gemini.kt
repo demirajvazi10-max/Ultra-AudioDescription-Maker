@@ -157,18 +157,24 @@ object Gemini {
         return lines.filter { it.t >= from - 1 && it.t <= hi }.sortedBy { it.t }.toMutableList() to speech
     }
 
-    /** One streamed request; onText gets the whole text so far. Busy (429) is waited out and sent again. */
+    /** "Google is busy": too many requests (429), the model is overloaded ("high demand", 503), or a passing server error. */
+    private val BUSY = setOf(429, 500, 502, 503, 504)
+
+    /** Google became busy inside a streamed answer, before any text arrived. */
+    private class BusyInStream : Exception()
+
+    /** One streamed request; onText gets the whole text so far. Busy (429, 503 …) is waited out and sent again. */
     private suspend fun stream(key: String, request: JSONObject, onText: (String) -> Unit, onBusy: (Int) -> Unit): String {
         var m = model(key)
         for (attempt in 0..4) {
             coroutineContext.ensureActive()
-            val result = withContext(Dispatchers.IO) {
+            val result = try { withContext(Dispatchers.IO) {
                 val c = open("${BASE}models/$m:streamGenerateContent?alt=sse", key, "POST")
                 c.doOutput = true
                 c.setRequestProperty("content-type", "application/json")
                 c.outputStream.use { it.write(request.toString().toByteArray()) }
                 when {
-                    c.responseCode == 429 -> "\u0000busy"
+                    c.responseCode in BUSY -> "\u0000busy"
                     c.responseCode == 404 && m != "gemini-flash-latest" -> "\u0000model"
                     c.responseCode != 200 -> throw GeminiException(errorMessage(c), c.responseCode)
                     else -> {
@@ -179,7 +185,10 @@ object Gemini {
                                 val line = r.readLine() ?: break
                                 if (!line.startsWith("data:")) continue
                                 val chunk = try { JSONObject(line.substring(5).trim()) } catch (e: Exception) { continue }
-                                chunk.optJSONObject("error")?.let { throw GeminiException(it.optString("message")) }
+                                chunk.optJSONObject("error")?.let {
+                                    if (text.isEmpty() && it.optInt("code") in BUSY) throw BusyInStream()
+                                    throw GeminiException(it.optString("message"))
+                                }
                                 val parts = chunk.optJSONArray("candidates")?.optJSONObject(0)?.optJSONObject("content")?.optJSONArray("parts") ?: continue
                                 var grew = false
                                 for (i in 0 until parts.length()) {
@@ -194,7 +203,7 @@ object Gemini {
                         text.toString().trim()
                     }
                 }
-            }
+            } } catch (e: BusyInStream) { "\u0000busy" }
             when (result) {
                 "\u0000busy" -> { val wait = 15 * (attempt + 1); onBusy(wait); delay(wait * 1000L) }
                 "\u0000model" -> { m = "gemini-flash-latest"; model = m }

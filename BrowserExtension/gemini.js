@@ -6,6 +6,8 @@
   'use strict';
 
   const BASE = 'https://generativelanguage.googleapis.com/v1beta/';
+  /** "Google is busy": too many requests (429), the model is overloaded ("high demand", 503), or a passing server error. */
+  const BUSY = new Set([429, 500, 502, 503, 504]);
 
   const PROMPT_NAMES = {
     sr: 'Serbian (ekavian, as spoken in Serbia), written in the Latin alphabet',
@@ -130,7 +132,7 @@
     return cachedModel = chosen;
   }
 
-  /** One request; "busy" (429) is retried a few times. */
+  /** One request; "busy" (429, 503 …) is retried a few times. */
   async function generate(key, parts, config, signal) {
     if (!key) throw new Error('no_key');
     let m = await model(key);
@@ -142,7 +144,7 @@
         body
       });
       const text = await r.text();
-      if (r.status === 429 && attempt < 3) { await new Promise(res => setTimeout(res, 15000 * (attempt + 1))); continue; }
+      if (BUSY.has(r.status) && attempt < 3) { await new Promise(res => setTimeout(res, 15000 * (attempt + 1))); continue; }
       if (r.status === 404 && attempt === 0 && m !== 'gemini-flash-latest') { m = cachedModel = 'gemini-flash-latest'; continue; }
       if (!r.ok) {
         let msg = r.status + '';
@@ -173,7 +175,7 @@
         headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
         body
       });
-      if (r.status === 429 && attempt < 4) { onBusy && onBusy(15 * (attempt + 1)); await new Promise(res => setTimeout(res, 15000 * (attempt + 1))); continue; }
+      if (BUSY.has(r.status) && attempt < 4) { onBusy && onBusy(15 * (attempt + 1)); await new Promise(res => setTimeout(res, 15000 * (attempt + 1))); continue; }
       if (r.status === 404 && attempt === 0 && m !== 'gemini-flash-latest') { m = cachedModel = 'gemini-flash-latest'; continue; }
       if (!r.ok) {
         const t = await r.text();
@@ -189,8 +191,8 @@
       }
       const reader = r.body.getReader();
       const decoder = new TextDecoder();
-      let buffer = '', text = '';
-      for (;;) {
+      let buffer = '', text = '', busyInStream = false;
+      read: for (;;) {
         const { value, done } = await reader.read();
         if (done) break;
         buffer += decoder.decode(value, { stream: true });
@@ -201,11 +203,21 @@
           if (!line.startsWith('data:')) continue;
           let chunk;
           try { chunk = JSON.parse(line.slice(5)); } catch (e) { continue; }
-          if (chunk.error) throw new Error(chunk.error.message || 'Gemini error');
+          if (chunk.error) {
+            // "high demand" can also arrive inside the stream; before any text, it is waited out like the rest
+            if (!text && BUSY.has(chunk.error.code) && attempt < 4) { busyInStream = true; break read; }
+            throw new Error(chunk.error.message || 'Gemini error');
+          }
           const p = (((chunk.candidates || [])[0] || {}).content || {}).parts || [];
           const add = p.filter(x => !x.thought).map(x => x.text || '').join('');
           if (add) { text += add; onText && onText(text); }
         }
+      }
+      if (busyInStream) {
+        try { reader.cancel(); } catch (e) { }
+        onBusy && onBusy(15 * (attempt + 1));
+        await new Promise(res => setTimeout(res, 15000 * (attempt + 1)));
+        continue;
       }
       return text.trim();
     }

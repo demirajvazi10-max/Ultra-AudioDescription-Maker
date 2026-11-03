@@ -166,7 +166,12 @@ namespace UltraAudioDescriptionMaker.Ai
                     state =>
                     {
                         var st = state.Split('|');
-                        wp.SetDetail(st[0] == "busy" ? Strings.LF("wp_gemini_busy", st[1]) : Strings.L("wp_gemini_retry"));
+                        wp.SetDetail(st[0] switch
+                        {
+                            "busy" => Strings.LF("wp_gemini_busy", st[1]),
+                            "model" => Strings.LF("wp_gemini_model", st[1]),
+                            _ => Strings.L("wp_gemini_retry")
+                        });
                     }, ct, fps, inline);
                 var (lines, speech) = Parse(answer, from, to, lang);
 

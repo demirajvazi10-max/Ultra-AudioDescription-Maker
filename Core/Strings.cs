@@ -228,6 +228,7 @@ namespace UltraAudioDescriptionMaker.Core
             ["wp_part_of"] = ("(Part {0} of {1}.)", "(Deo {0} od {1}.)"),
             ["wp_gemini_writing"] = ("{0} descriptions written, up to {1} of {2}.", "Napisano {0} opisa, do {1} od {2}."),
             ["wp_gemini_busy"] = ("Google is busy; trying again in {0} seconds.", "Google je zauzet; ponovo pokušavam za {0} sekundi."),
+            ["wp_gemini_model"] = ("This Gemini model is overloaded right now; trying {0} instead.", "Ovaj Gemini model je trenutno preopterećen; pokušavam sa {0}."),
             ["wp_gemini_retry"] = ("The connection went quiet; sending the request again.", "Veza je utihnula; ponovo šaljem zahtev."),
             ["m_cancel_work"] = ("Stop the work in progress…", "Prekini posao koji traje…"),
             ["q_cancel_work"] = ("Stop this work?\n\n{0}\n\nWhat was done so far is not kept.", "Da prekinem ovaj posao?\n\n{0}\n\nOno što je do sada urađeno neće biti sačuvano."),
