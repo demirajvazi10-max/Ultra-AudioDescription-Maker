@@ -236,7 +236,7 @@ namespace UltraAudioDescriptionMaker.UI
                 Item("m_log", "", OpenLog)));
             MainMenu.Items.Add(Top("m_help",
                 Item("m_keys", "F1", ShowKeys),
-                Item("m_sponsor", "", () => Ui.OpenLink(Links.Sponsors)),
+                Item("m_sponsor", "", () => UltraSupport.SupportInfo.Show(this, "Ultra Audio Description Maker", Strings.Language == "sr")),
                 Item("m_about", "", ShowAbout)));
         }
 

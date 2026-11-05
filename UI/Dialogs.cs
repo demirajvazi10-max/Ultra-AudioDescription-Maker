@@ -569,13 +569,15 @@ namespace UltraAudioDescriptionMaker.UI
             string version = v == null ? "" : $"{v.Major}.{v.Minor}.{v.Build}";
             var box = new TextBox
             {
-                Text = Strings.LF("about_text", version), IsReadOnly = true, IsReadOnlyCaretVisible = true,
+                Text = Strings.LF("about_text", version) + "\n\n" + UltraSupport.SupportInfo.AboutLine(Strings.Language == "sr"), IsReadOnly = true, IsReadOnlyCaretVisible = true,
                 TextWrapping = TextWrapping.Wrap, AcceptsReturn = true, BorderThickness = new Thickness(0)
             };
             Body.Children.Add(Ui.Labelled(Strings.L("about_lbl"), box));
             var sponsor = Ui.LinkButton(Strings.L("about_sponsor"), Links.Sponsors);
             sponsor.FontWeight = FontWeights.SemiBold;
             Body.Children.Add(sponsor);
+            Body.Children.Add(Ui.Btn(UltraSupport.SupportInfo.ButtonText(Strings.Language == "sr"),
+                (_, __) => UltraSupport.SupportInfo.Show(this, "Ultra Audio Description Maker", Strings.Language == "sr")));
             Body.Children.Add(Ui.LinkButton(Strings.L("about_github"), Links.GitHub));
             AddClose();
             FocusFirst(box);

@@ -397,7 +397,7 @@ namespace UltraAudioDescriptionMaker.Core
             ["set_test_sentence_fr"] = ("Anna entre dans la pièce et allume la lumière.", "Anna entre dans la pièce et allume la lumière."),
             ["set_test_sentence_it"] = ("Anna entra nella stanza e accende la luce.", "Anna entra nella stanza e accende la luce."),
 
-            ["m_sponsor"] = ("_Support the project (GitHub Sponsors)", "Po_drži projekat (GitHub Sponsors)"),
+            ["m_sponsor"] = ("How to _support the project", "Kako po_držati projekat"),
             ["about_lbl"] = ("About", "O programu"),
             ["about_sponsor"] = ("Support Demir Ajvazi on GitHub Sponsors", "Podrži Demira Ajvazija na GitHub Sponsors"),
             ["about_github"] = ("Demir Ajvazi on GitHub", "Demir Ajvazi na GitHubu"),

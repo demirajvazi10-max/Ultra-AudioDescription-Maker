@@ -250,7 +250,13 @@ From the [`Android`](Android) folder run `gradlew assembleDebug`. The APK appear
 
 ## Support
 
-If the program helps you, you can support its development on [GitHub Sponsors](https://github.com/sponsors/demirajvazi10-max). The link is always in the program too: **Help → About** and **Help → Support the project**.
+Ultra Audio Description Maker is free and will stay free. If you'd like to support its development:
+
+- **By card on [Ko-fi](https://ko-fi.com/ultracreativesuite)** — no account needed: type an amount, press *Donate* and pay with a Visa or Mastercard (credit or debit) or PayPal. The easiest way from abroad.
+- **[GitHub Sponsors](https://github.com/sponsors/demirajvazi10-max)** — monthly or one-time, paid with an ordinary payment card (no PayPal needed); needs a free GitHub account.
+- **Bank transfer from Serbia** — recipient Demir Ajvazi, account `265-0000006185877-28`, Raiffeisen banka, purpose *Donacija za Ultra programe*. Meant for domestic transfers; from abroad, Ko-fi costs far less in fees.
+
+The same guide is inside the app: **Help → How to support the project**, in English and Serbian, with buttons to open Ko-fi or GitHub Sponsors and to copy the account number.
 
 ## Author and license
 
